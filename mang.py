@@ -3,29 +3,24 @@ import pygame as pg
 pg.init()
 
 aken= pg.display.set_mode((800,400))
-gameplay=True
+run=True
+x=0
+y=0
 
-class ruut:
-    def __int__(self, kyljePikkus):
-        self.kyljePikkus=kyljePikkus
-xkoord=1
+player= pg.image.load("pildid\pilt1.jpg").convert_alpha()
 
-
-
-while gameplay:
-
+while run:
+    pg.time.delay(10)
     for event in pg.event.get():
         if event.type==pg.QUIT:
-            gameplay=False
+            run=False
+        if event.type==pg.KEYDOWN:
+            if event.key==pg.K_SPACE:
+                x+=10
 
-    if xkoord==700:
-        xkoord=0
-
-    aken.fill((0,0,0))
-    #kuhu, (värv), (asukoht ja suurus)
-    pg.draw.rect(aken, (200, 100, 100), (xkoord, 30, 60, 60))
-
-    pg.display.update()
-    xkoord+=1
+    aken.fill((255,255,255))
+    aken.blit(player, (x, y))
+    #x+=1
+    pg.display.flip()
 
 
