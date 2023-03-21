@@ -1,15 +1,17 @@
 import pygame
 import pygame as pg
 from random import randint
+from random import choice
 
 #terve hunniks muutujaid
 size= width, height= (800, 500)
 skoor=0
-
-
+#tüüp:(värv) sinine; kollane; roheline, roosa
+erinevad_kastid= {"normal":(190,250,255), "2xSkoor":(255,255,176), "0.5xK_Kiirus": (200, 255, 190), "2xK_Kiirus": (255, 192, 192)}
+tüüp= choice(list(erinevad_kastid.keys()))
+värv=erinevad_kastid[tüüp]
 #kujund
 a=30
-
 #kiirus
 v_player= 10
 v_kast=5
@@ -24,7 +26,7 @@ pygame.font.init()
 
 #set up
 aken = pygame.display.set_mode(size)
-pg.display.set_caption("jah?")
+pg.display.set_caption("suht lahe mäng")
 gameplay= True
 
 #mängu loop
@@ -41,17 +43,32 @@ while gameplay:
     if keys[pygame.K_RIGHT] and x_player<width-a:
         x_player+= v_player
 
+    #kasti kukkumine
     if y_kast<500:
         y_kast+=v_kast
         v_kast+=0.001
     else:
         x_kast=randint(0,width-a)
         y_kast=0
+
+    #kontrolli kas kukkus pähe v ei
     if y_player < (y_kast+a):
         if ((x_player > x_kast and x_player < (x_kast + a)) or ((x_player + a) > x_kast and (x_player + a) < (x_kast + a))):
-            skoor+=1
+            if tüüp=="2xSkoor":
+                skoor+=2
+            else:
+                skoor+=1
+            if tüüp =="0.5xK_Kiirus":
+                v_kast=v_kast*0.5
+            elif tüüp =="2xK_Kiirus":
+                v_kast=v_kast*1.1
+
+            #reset
             x_kast=randint(0,width-a)
             y_kast=0
+        tüüp= choice(list(erinevad_kastid.keys()))
+        värv=erinevad_kastid[tüüp]
+
 
 
 
@@ -60,10 +77,12 @@ while gameplay:
     pg.draw.rect(aken, (100,150,150), (x_player, y_player, a, a))
 
 #tegelintski
-    pg.draw.rect(aken,(0, 255, 255), (x_kast, y_kast, a, a))
+    pg.draw.rect(aken, värv, (x_kast, y_kast, a, a))
+
+#kiri
     font = pygame.font.SysFont(None, 24)
-    img = font.render("skoor: " + str(skoor), True, "black")
-    aken.blit(img, (20, 20))
+    txt = font.render("skoor: " + str(skoor), True, "black")
+    aken.blit(txt, (20, 20))
     pg.display.update()
 
 
