@@ -8,7 +8,7 @@ lopp=False
 size= width, height= (800, 500)
 skoor=0
 elud=3
-#tüüp:(värv) sinine; kollane; roheline, roosa
+#tüüp:(värv) sinine; kollane; roheline, roosa, must, lilla
 erinevad_kastid= {"normal":(190,250,255), "2xSkoor":(255,255,176), "0.5xK_Kiirus": (200, 255, 190), "2xK_Kiirus": (255, 192, 192), "mürgine":(61,61,61), "+1elu": (175,130,250)}
 tüüp= choice(list(erinevad_kastid.keys()))
 värv=erinevad_kastid[tüüp]
@@ -27,17 +27,44 @@ y_kast=0
 pg.init()
 pygame.font.init()
 
-#set up
-aken = pygame.display.set_mode(size)
-pg.display.set_caption("suht lahe mäng")
-gameplay= True
 
-#mängu loop
+
+
+#set up
+pg.display.set_caption("suht lahe mäng")
+gameplay= False
+start= True
+ded= False
+
+aken0 = pygame.display.set_mode(size)
+aken0.fill((200,200,200))
+while start:
+    pg.time.delay(10)
+    aken0.fill((200,200,200))
+    for event in pg.event.get():
+        if event.type== pg.QUIT:
+            start=False
+    font = pygame.font.SysFont(None, 24)
+    skoortekst = font.render("sa ei vajutaks tühikut >:|", True, "black")
+    aken0.blit(skoortekst, (200, 250))
+    keys=pg.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        start=False
+        gameplay= True
+
+    pg.display.update()
+
+
+aken = pygame.display.set_mode(size)
+aken.fill((200,200,200))
+#main mängu loop
 while gameplay:
     pg.time.delay(10)
     for event in pg.event.get():
         if event.type== pg.QUIT:
             gameplay=False
+
+
 
     #mängija liikumine
     keys=pg.key.get_pressed()
@@ -69,6 +96,8 @@ while gameplay:
                 skoor += 3
             elif tüüp=="0.5xK_Kiirus":
                 skoor-=1
+            elif tüüp=="+1elu":
+                skoor-=1
             else:
                 skoor+=1
 
@@ -88,8 +117,9 @@ while gameplay:
             y_kast=0
             lopp=True
 
-        #if elud==0:
-            #gameplay=False
+        if elud==0:
+            gameplay=False
+            ded=True
 
 #joonistame
     aken.fill((200,200,200))
@@ -102,7 +132,6 @@ while gameplay:
     font = pygame.font.SysFont(None, 24)
     skoortekst = font.render("skoor: " + str(skoor), True, "black")
     aken.blit(skoortekst, (20, 20))
-    font = pygame.font.SysFont(None, 24)
     elutekst = font.render("elu: " + str(elud), True, "black")
     aken.blit(elutekst, (20, 50))
     pg.display.update()
@@ -112,6 +141,18 @@ while gameplay:
         värv = erinevad_kastid[tüüp]
         lopp=False
 
+
+aken2 = pygame.display.set_mode(size)
+aken2.fill((200,200,200))
+#game over
+while ded:
+    pg.time.delay(10)
+    loser = font.render("HAH NOOB OLED!!!!!!!!!!!", True, "black")
+    aken2.blit(loser, (200, 250))
+    for event in pg.event.get():
+        if event.type== pg.QUIT:
+            ded= False
+    pg.display.update()
 
 
 
