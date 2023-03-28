@@ -1,16 +1,20 @@
 import pygame
 import pygame as pg
 from random import randint
-from random import choice
+from random import choices
 
 #terve hunniks muutujaid
 lopp=False
 size= width, height= (800, 500)
 skoor=0
 elud=3
-#tüüp:(värv) sinine; kollane; roheline, roosa, must, lilla
+#tüüp:(värv) normal=sinine; 2xskoor=kollane; 0.5xKiirus=roheline, 2xKiirus=roosa, mürgine=must, +1elu=lilla
 erinevad_kastid= {"normal":(190,250,255), "2xSkoor":(255,255,176), "0.5xK_Kiirus": (200, 255, 190), "2xK_Kiirus": (255, 192, 192), "mürgine":(61,61,61), "+1elu": (175,130,250)}
-tüüp= choice(list(erinevad_kastid.keys()))
+
+#tüüp= ["normal", "2xSkoor", "0.5xK_Kiirus", "2xK_Kiirus", "mürgine", "+1elu"]
+
+tüüp= choices(list(erinevad_kastid.keys()), weights=(4,3,3,3,2,1), k=1)
+tüüp=tüüp[0]
 värv=erinevad_kastid[tüüp]
 #kujund
 a=30
@@ -38,6 +42,7 @@ ded= False
 
 aken0 = pygame.display.set_mode(size)
 aken0.fill((200,200,200))
+
 while start:
     pg.time.delay(10)
     aken0.fill((200,200,200))
@@ -59,6 +64,10 @@ aken = pygame.display.set_mode(size)
 aken.fill((200,200,200))
 #main mängu loop
 while gameplay:
+    if elud == 0:
+        gameplay = False
+        ded = True
+
     pg.time.delay(10)
     for event in pg.event.get():
         if event.type== pg.QUIT:
@@ -84,6 +93,7 @@ while gameplay:
         if tüüp!="mürgine":
             elud-=1
         lopp = True
+
 
     #kontrolli kas kukkus pähe v ei
     if y_player < (y_kast+tegelane):
@@ -117,10 +127,6 @@ while gameplay:
             y_kast=0
             lopp=True
 
-        if elud==0:
-            gameplay=False
-            ded=True
-
 #joonistame
     aken.fill((200,200,200))
     pg.draw.rect(aken, (100,150,150), (x_player, y_player, tegelane, tegelane))
@@ -137,8 +143,9 @@ while gameplay:
     pg.display.update()
 
     if lopp== True:
-        tüüp = choice(list(erinevad_kastid.keys()))
-        värv = erinevad_kastid[tüüp]
+        tüüp= choices(list(erinevad_kastid.keys()), weights=(4,3,3,3,2,1), k=1)
+        tüüp=tüüp[0]
+        värv=erinevad_kastid[tüüp]
         lopp=False
 
 
@@ -152,6 +159,10 @@ while ded:
     for event in pg.event.get():
         if event.type== pg.QUIT:
             ded= False
+    keys = pg.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        ded = False
+        gameplay = True
     pg.display.update()
 
 
