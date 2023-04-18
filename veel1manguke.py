@@ -5,6 +5,8 @@ from random import choices
 
 #terve hunniks muutujaid
 lopp=False
+
+
 size= width, height= (800, 500)
 skoor=0
 elud=3
@@ -108,7 +110,7 @@ while pelu:
         #kasti kukkumine
         if y_kast<550:
             y_kast+=v_kast
-            v_kast+=0.001
+            v_kast+=0.002
 
         else:
             x_kast=randint(0,width-a)
@@ -188,6 +190,7 @@ while pelu:
             ded = False
             gameplay = True
             elud=3
+            skoor=0
         pg.display.update()
 
 
