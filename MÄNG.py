@@ -18,6 +18,7 @@ taust = pg.transform.scale(taust,(width,height)).convert_alpha()
 
 lõpp = pg.image.load("lõpp.png")
 lõpp = pg.transform.scale(lõpp,(width,height)).convert_alpha()
+
 #sõõrikute pildid (et oleks õige suurusega)
 sinine = pg.transform.scale(pg.image.load("sinine.png"),(110,110))
 kollane= pg.transform.scale(pg.image.load("kollane.png"),(110,110))
@@ -25,9 +26,6 @@ lilla = pg.transform.scale(pg.image.load("lilla.png"),(110,110))
 roheline = pg.transform.scale(pg.image.load("roheline.png"),(110,110))
 roosa = pg.transform.scale(pg.image.load("roosa.png"),(110,110))
 myrgine = pg.transform.scale(pg.image.load("radioaktiivne.png"),(110,110))
-
-
-
 
 #taustamuusika
 pg.mixer.init()
@@ -75,19 +73,34 @@ while start:
         if event.type== pg.QUIT:
             start=False
             pelu=False
-    font = pygame.font.SysFont(None, 24)
+    font = pygame.font.SysFont('consolas', 18)
     #kuritekst = font.render("sa ei vajutaks tühikut >:|", True, "black")
     # tüüp:(värv) normal=sinine; 2xskoor=kollane; 0.5xKiirus=roheline, 2xKiirus=roosa, mürgine=must, +1elu=lilla
-    tutorialtekst=font.render("liikumiseks: < > ; [tühik] et alustada", True, "black")
-    tutorialtekst1=font.render("mugi sõõrikuid a mustast hoia eemale", True, "black")
-    tutorialtekst2=font.render("sinine: +1 skoor, kollane: +2 skoor, roheline: -kiirus - skoor, roosa: +kiirus +3 skoor", True, "black")
+    tutorialtekst1=font.render("SÖÖ VÄRVILISI SÕÕRIKUID JA KOGU VÕIMALIKULT SUUR PUNKTISKOOR", True, "black",)
+    font = pygame.font.SysFont('consolas', 14)
+    tutorialtekst2=font.render("sinine: +1 PUNKT", True, "black")
+    tutorialtekst3=font.render("KOLLANE: +2 PUNKTI", True, "black")
+    tutorialtekst4=font.render("ROHELINE: KIIRUSx0.5 JA -1 PUNKT", True, "black")
+    tutorialtekst5=font.render("ROOSA: KIIRUSx2 JA +3 PUNKTI", True, "black")
+    tutorialtekst6=font.render("LILLA: +1 ELU", True, "black")
+    tutorialtekst7=font.render("HOIA MUSTAST RADIOAKTIIVSEST SÕÕRIKUST EEMALE!", True, "black")
+    font = pygame.font.SysFont('consolas', 18)
+    tutorialtekst8=font.render("KASUTA LIIKUMISEKS NOOLI", True, "black")
+    tutorialtekst9=font.render("ALUSTAMISEKS VAJUTA TÜHIKUT", True, "black")
 
 
     #aken.blit(kuritekst, (200, 250))
-    aken.blit(tutorialtekst1, (150, 100))
-    aken.blit(tutorialtekst2, (150, 300))
+    aken.blit(tutorialtekst1, (110, 50))
+    aken.blit(tutorialtekst2, (250, 80))
+    aken.blit(tutorialtekst3, (250, 110))
+    aken.blit(tutorialtekst4, (250, 140))
+    aken.blit(tutorialtekst5, (250, 170))
+    aken.blit(tutorialtekst6, (250, 200))
+    aken.blit(tutorialtekst7, (250, 230))
+    aken.blit(tutorialtekst8, (110, 300))
+    aken.blit(tutorialtekst9, (110, 330))
 
-    aken.blit(tutorialtekst, (150, 400))
+
     keys=pg.key.get_pressed()
     if keys[pygame.K_SPACE]:
         start=False
@@ -185,7 +198,7 @@ while pelu:
         aken.blit(värv,(x_kast, y_kast))
 
     #kiri
-        font = pygame.font.SysFont(None, 24)
+        font = pygame.font.SysFont('consolas', 18)
         skoortekst = font.render("SKOOR: " + str(skoor), True, "black")
         aken.blit(skoortekst, (20, 20))
         elutekst = font.render("ELU: " + str(elud), True, "black")
@@ -199,15 +212,27 @@ while pelu:
             lopp=False
 
 
-    aken.blit(lõpp,(0,0))
+    aken.blit(lõpp,(0,0)) # lõpu taust
+
     #game over
     if  ded:
+        skoor = str(skoor)
         pg.mixer.music.stop() #muusika lõpetab
         läbi.play() #mängib end soundi
     while ded:
         pg.time.delay(10)
-        loser = font.render("HAH NOOB OLED!!!!!!!!!!!", True, "black")
-        aken.blit(loser, (200, 250))
+
+        font = pygame.font.SysFont('consolas', 40)
+        loser = font.render("MÄNG LÄBI", True, "black")
+
+        font = pygame.font.SysFont('consolas', 20)
+        punktid = font.render(f"SINU SKOOR OLI {skoor}", True, "black")
+        uuesti = font.render("UUESTI MÄNGIMISEKS VAJUTA TÜHIKUT", True, "black")
+
+        aken.blit(loser, (320, 50))
+        aken.blit(punktid, (320, 400))
+        aken.blit(uuesti, (250, 450))
+        
         for event in pg.event.get():
             if event.type== pg.QUIT:
                 ded= False
@@ -219,10 +244,5 @@ while pelu:
             elud=3
             skoor = 0
         pg.display.update()
-
-
-
-
-
 
 pg.quit()
