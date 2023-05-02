@@ -39,12 +39,12 @@ erinevad_soorikud= {"normal":sinine, "2xSkoor":kollane, "0.5xK_Kiirus": roheline
 
 #tüüp= ["normal", "2xSkoor", "0.5xK_Kiirus", "2xK_Kiirus", "mürgine", "+1elu"]
 
-tüüp= choices(list(erinevad_soorikud.keys()), weights=(4,3,3,3,2,1), k=1)
+tüüp= choices(list(erinevad_soorikud.keys()), weights=(4,3,2,3,2,1), k=1)
 tüüp=tüüp[0]
 värv=erinevad_soorikud[tüüp]
 #kujund
 sooriku_laius = 80
-tegelane=90
+tegelane = 90
 #kiirus
 v_player= 10
 v_kast=5
@@ -142,12 +142,12 @@ while pelu:
             x_player+= v_player
 
         #kasti kukkumine
-        if y_kast<550:
+        if y_kast<500:
             y_kast+=v_kast
-            v_kast+=0.001
+            v_kast+=0.003
 
         else:
-            x_kast=randint(0,width-sooriku_laius)
+            x_kast=randint(0,width-110)#sõõriku pildi laius, et ei läheks ekraailt välja
             y_kast=0
             if tüüp!="mürgine":
                 elud-=1
@@ -206,7 +206,7 @@ while pelu:
         pg.display.update()
 
         if lopp== True:
-            tüüp= choices(list(erinevad_soorikud.keys()), weights=(4,3,3,3,2,1), k=1)
+            tüüp= choices(list(erinevad_soorikud.keys()), weights=(4,3,2,3,2,1), k=1)
             tüüp=tüüp[0]
             värv=erinevad_soorikud[tüüp]
             lopp=False
@@ -243,6 +243,7 @@ while pelu:
             gameplay = True
             elud=3
             skoor = 0
+            v_kast = 5
         pg.display.update()
 
 pg.quit()
